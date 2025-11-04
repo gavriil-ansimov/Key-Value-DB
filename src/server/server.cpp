@@ -2,15 +2,18 @@
 #include <iostream>
 #include <string>
 
-using boost::asio::ip::tcp;
+#include "Database.h"
+#include "Parser.h"
 
-std::string process_command(const std::string& cmd);
+using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[]) {
     try {
         boost::asio::io_context io_context;
 
         tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
+        Database db;
+        Parser parser;
         std::cout << "Server listening...\n";
 
         while (true) {
@@ -37,7 +40,7 @@ int main(int argc, char* argv[]) {
                         break;
                     }
 
-                    std::string response = process_command(command);
+                    std::string response = parser.parse(command, db);
                     response += '\n';
 
                     boost::asio::write(socket, boost::asio::buffer(response));
