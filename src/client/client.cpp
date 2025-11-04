@@ -5,10 +5,25 @@
 using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[]) {
+    std::string addr = "127.0.0.1";
+    std::string port = "8080";
+
+    int opt;
+    while( (opt = getopt(argc, argv, "a:p:") != -1)) {
+        switch (opt) {
+        case 'a':
+            addr = optarg;
+            break;
+        case 'p':
+            port = optarg;
+            break;
+        }
+    }
+    std::cout << "Addr: " << addr << std::endl << "Port: " << port << std::endl;
     try {
         boost::asio::io_context io_context;
         tcp::resolver resolver(io_context);
-        tcp::resolver::results_type endpoints = resolver.resolve("127.0.0.1", "8080");
+        tcp::resolver::results_type endpoints = resolver.resolve(addr, port);
 
         tcp::socket socket(io_context);
         boost::asio::connect(socket, endpoints);

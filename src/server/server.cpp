@@ -8,10 +8,22 @@
 using boost::asio::ip::tcp;
 
 int main(int argc, char* argv[]) {
+    unsigned short port = 8080;
+    int opt;
+
+    while( (opt = getopt(argc, argv, "p:")) != -1) {
+        switch (opt) {
+        case 'p':
+            port = std::atoi(optarg);
+            break;
+        default:
+            std::cout << "Using default port: " << port << std::endl;
+        }
+    }
     try {
         boost::asio::io_context io_context;
 
-        tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
+        tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
         Database db;
         Parser parser;
         std::cout << "Server listening...\n";
@@ -36,7 +48,7 @@ int main(int argc, char* argv[]) {
                     std::cout << "Received command:" << command << std::endl;
 
                     if (command == "EXIT") {
-                        std::cout << "Client closed connection";
+                        std::cout << "Client closed connection" << std::endl;
                         break;
                     }
 
