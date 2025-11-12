@@ -34,14 +34,15 @@ int main(int argc, char* argv[]) {
             std::cout << "> ";
             std::string cmd;
             std::getline(std::cin, cmd);
+
+            if (cmd == "EXIT")
+                break;
             cmd += '\n';
+            
             boost::asio::write(socket, boost::asio::buffer(cmd));
             
             boost::asio::streambuf response;
             boost::asio::read_until(socket, response, '\n');
-
-            if (cmd == "EXIT")
-                break;
 
             std::istream input(&response);
             std::string reply;
