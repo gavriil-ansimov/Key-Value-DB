@@ -1,0 +1,20 @@
+#pragma once
+
+#include <boost/asio.hpp>
+#include <memory>
+
+#include "../database/Database.h"
+#include "Session.h"
+
+using boost::asio::ip::tcp;
+
+class Server {
+public:
+    Server(boost::asio::io_context& io_context, short port);
+private:
+    void do_accept();
+
+    tcp::acceptor acceptor_;
+    tcp::socket socket_;
+    Database db_;
+};

@@ -5,8 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-struct Database{
-private:
+class Database{
     std::unordered_map<std::string, std::string> db_;
 public:
     std::string get(const std::string&);
@@ -16,6 +15,8 @@ public:
     void put(const std::string& key, const std::string& value);
     void del(const std::string& key);
     void load(const std::string& filename);
+
+    std::string execute_command(std::string& cmd);
 };
 
 

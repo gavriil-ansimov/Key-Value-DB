@@ -1,5 +1,12 @@
 #include "Database.h"
 
+//TODO:
+//Fix command reply, ex. "OK <value>"
+
+std::string Database::execute_command(std::string& cmd) {
+    return "Oooooh...";
+}
+
 std::string Database::get(const std::string& key) {
     auto it = db_.find(key);
     
