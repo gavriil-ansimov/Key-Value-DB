@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <regex>
 
 class Database;
 
@@ -10,7 +11,7 @@ public:
     virtual ~Command()=default;
 
     virtual std::string execute(Database& db)=0;
-    virtual bool validate() const=0;
+    virtual bool validate() const { return true; }
 };
 
 using CommandPtr = std::unique_ptr<Command>;

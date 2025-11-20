@@ -1,24 +1,19 @@
 #include "Database.h"
 
-//TODO:
-//Fix command reply, ex. "OK <value>"
-
-std::string Database::execute_command(std::string& cmd) {
-    return "Oooooh...";
-}
-
-std::string Database::get(const std::string& key) {
+std::string Database::get(const std::string& key) const {
     auto it = db_.find(key);
     
     if (it == db_.end())
-        return "No such key.";
+        return "NE";
 
     return it->second;
 }
-int Database::count() {
-    return db_.size();
+
+std::string Database::count() const {
+    return std::to_string(db_.size());
 }
-void Database::dump(const std::string& filename) {
+
+std::string Database::dump(const std::string& filename = "db.txt") const {
     std::ofstream out(filename);
 
     if (!out) throw std::runtime_error("Cannot open file");
@@ -26,14 +21,26 @@ void Database::dump(const std::string& filename) {
     for (const auto& [key, value] : db_) {
         out << key << '\t' << value << std::endl;
     }
+
+    return "OK";
 }
-void Database::put(const std::string& key, const std::string& value) {
+
+std::string Database::put(const std::string& key, const std::string& value) {
     db_[key] = value;
+    return "OK";
 }
-void Database::del(const std::string& key) {
+
+std::string Database::del(const std::string& key) {
+    auto it = db_.find(key);
+    
+    if (it == db_.end())
+        return "NE";
+
     db_.erase(key);
+    return "OK";
 }
-void Database::load(const std::string& filename) {
+
+std::string Database::load(const std::string& filename = "db.txt") {
     std::ifstream in(filename);
 
     if (!in) throw std::runtime_error("Cannot open file");
@@ -41,4 +48,5 @@ void Database::load(const std::string& filename) {
     while(in >> key >> value) {
         db_[key] = value;
     }
+    return "OK";
 }

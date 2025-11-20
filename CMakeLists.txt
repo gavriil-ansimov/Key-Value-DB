@@ -12,6 +12,11 @@ add_executable(kv_storage
     src/server/database/Database.cpp
     src/server/command/Parser.cpp
     src/server/command/commands/GetCommand.cpp
+    src/server/command/commands/PutCommand.cpp
+    #src/server/command/commands/CountCommand.cpp
+    src/server/command/commands/DelCommand.cpp
+    src/server/command/commands/DumpCommand.cpp
+    src/server/command/commands/LoadCommand.cpp
     src/server/network/Server.cpp
     src/server/network/Session.cpp
 )

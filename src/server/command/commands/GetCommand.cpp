@@ -9,5 +9,6 @@ std::string GetCommand::execute(Database& db) {
 }
 
 bool GetCommand::validate() const {
-    return !key_.empty();
+    std::regex pattern(R"(^[A-Za-z0-9]+$)");
+    return !key_.empty() && std::regex_match(key_, pattern);
 }
