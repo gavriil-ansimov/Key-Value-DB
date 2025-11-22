@@ -34,5 +34,5 @@ Client:
     mkdir build && cd build
     cmake ..
     make
-    ./kvserver
+    ./kv_storage
 ```
