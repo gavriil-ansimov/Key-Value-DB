@@ -1,6 +1,7 @@
 #include "Database.h"
 
 std::string Database::get(const std::string& key) const {
+    std::lock_guard<std::mutex> lock(m_);
     auto it = db_.find(key);
     
     if (it == db_.end())
@@ -10,10 +11,12 @@ std::string Database::get(const std::string& key) const {
 }
 
 std::string Database::count() const {
+    std::lock_guard<std::mutex> lock(m_);
     return std::to_string(db_.size());
 }
 
 std::string Database::dump(const std::string& filename = "db.txt") const {
+    std::lock_guard<std::mutex> lock(m_);
     std::ofstream out(filename);
 
     if (!out) throw std::runtime_error("Cannot open file");
@@ -26,11 +29,13 @@ std::string Database::dump(const std::string& filename = "db.txt") const {
 }
 
 std::string Database::put(const std::string& key, const std::string& value) {
+    std::lock_guard<std::mutex> lock(m_);
     db_[key] = value;
     return "OK";
 }
 
 std::string Database::del(const std::string& key) {
+    std::lock_guard<std::mutex> lock(m_);
     auto it = db_.find(key);
     
     if (it == db_.end())
@@ -41,6 +46,7 @@ std::string Database::del(const std::string& key) {
 }
 
 std::string Database::load(const std::string& filename = "db.txt") {
+    std::lock_guard<std::mutex> lock(m_);
     std::ifstream in(filename);
 
     if (!in) throw std::runtime_error("Cannot open file");

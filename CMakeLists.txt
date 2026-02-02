@@ -17,6 +17,7 @@ add_executable(kv_storage
     src/server/command/commands/DelCommand.cpp
     src/server/command/commands/DumpCommand.cpp
     src/server/command/commands/LoadCommand.cpp
+    src/server/concurrency/WorkerPool.cpp
     src/server/network/Server.cpp
     src/server/network/Session.cpp
 )
@@ -27,6 +28,7 @@ target_include_directories(kv_storage PRIVATE
     src/server/database
     src/server/command
     src/server/command/commands
+    src/server/concurrency
     src/server/network
 )
 

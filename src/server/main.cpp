@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "network/Server.h"
+#include "concurrency/WorkerPool.h"
 
 int main(int argc, char* argv[]) {
     unsigned short port = 8080;
@@ -24,7 +25,8 @@ int main(int argc, char* argv[]) {
             io_context.stop();
         });
 
-        Server s(io_context, port);
+        WorkerPool workers(std::thread::hardware_concurrency());
+        Server s(io_context, port, workers);
 
         std::cout << "Key-Value storage server running on port " << port << std::endl;
         std::cout << "Press Ctrl+C to stop\n";
