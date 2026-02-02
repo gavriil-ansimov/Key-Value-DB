@@ -29,10 +29,10 @@ void Session::do_write(size_t length) {
     std::istream input(&buffer_);
     std::string command;
     std::getline(input, command);
-    std::string response = process_command(command);
-    response += '\n';
 
-    boost::asio::async_write(socket_, boost::asio::buffer(response),
+    auto response = std::make_shared<std::string>(process_command(command) + '\n');
+
+    boost::asio::async_write(socket_, boost::asio::buffer(*response),
     [this, self](boost::system::error_code ec, size_t){
         if (!ec) {
             do_read();
