@@ -6,7 +6,6 @@
 #include <vector>
 #include <mutex>
 
-
 class Database{
 public:
     std::string get(const std::string&) const;

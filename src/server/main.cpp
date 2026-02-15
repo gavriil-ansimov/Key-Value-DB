@@ -3,6 +3,7 @@
 
 #include "network/Server.h"
 #include "concurrency/WorkerPool.h"
+#include "logging/Logger.h"
 
 int main(int argc, char* argv[]) {
     unsigned short port = 8080;
@@ -14,10 +15,14 @@ int main(int argc, char* argv[]) {
             port = std::atoi(optarg);
             break;
         default:
-            std::cout << "Using default port: " << port << std::endl;
+            LOG_INFO << "Using default port: " << port;
         }
     }
     try {
+        logging::init();
+
+        LOG_INFO << "Starting server...";
+
         boost::asio::io_context io_context;
 
         boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
@@ -25,19 +30,20 @@ int main(int argc, char* argv[]) {
             io_context.stop();
         });
 
-        WorkerPool workers(std::thread::hardware_concurrency());
-        Server s(io_context, port, workers);
+        auto threads = std::thread::hardware_concurrency();
+        WorkerPool workers(threads);
 
-        std::cout << "Key-Value storage server running on port " << port << std::endl;
-        std::cout << "Press Ctrl+C to stop\n";
+        LOG_INFO << "Starting worker pool with " << threads << " threads";
+
+        Server s(io_context, port, workers);
 
         io_context.run();
 
-        std::cout << "Server stopped gracefully\n";
+        LOG_INFO << "Server stopped gracefully";
 
     }
     catch (std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        LOG_FATAL << "Unhandled exception in main: " << e.what() << std::endl;
     }
     return 0;
 }

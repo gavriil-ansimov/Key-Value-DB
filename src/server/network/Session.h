@@ -3,6 +3,8 @@
 #include <boost/asio.hpp>
 #include <memory>
 
+#include "../logging/Logger.h"
+
 class Database;
 class CommandParser;
 
@@ -11,6 +13,7 @@ using boost::asio::ip::tcp;
 class Session : public std::enable_shared_from_this<Session> {
 public:
     Session(tcp::socket socket, Database& db);
+    ~Session();
     void start();
 private:
     void do_read();

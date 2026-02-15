@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     std::string port = "8080";
 
     int opt;
-    while( (opt = getopt(argc, argv, "a:p:") != -1)) {
+    while( (opt = getopt(argc, argv, "a:p:")) != -1) {
         switch (opt) {
         case 'a':
             addr = optarg;
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
             std::string reply;
             std::getline(input, reply);
 
-            std::cout << "Server: " << reply << std::endl;
+            std::cout << reply << std::endl;
         }
 
         socket.close();

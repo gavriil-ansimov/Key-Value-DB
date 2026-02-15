@@ -1,4 +1,5 @@
 *.out
-*.db
+*.txt
 /.vscode
 /build
+/logs
