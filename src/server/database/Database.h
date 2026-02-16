@@ -6,6 +6,8 @@
 #include <vector>
 #include <mutex>
 
+#include "../logging/Logger.h"
+
 class Database{
 public:
     std::string get(const std::string&) const;

@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
             port = std::atoi(optarg);
             break;
         default:
-            LOG_INFO << "Using default port: " << port;
+            LOG_WARNING << "Using default port: " << port;
         }
     }
     try {

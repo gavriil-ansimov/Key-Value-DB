@@ -16,7 +16,7 @@ Session::~Session() {
     if (!ec)
         LOG_INFO << "Client disconnected: " << ep;
     else
-        LOG_DEBUG << "Client disconnected";
+        LOG_INFO << "Client disconnected";
 }
 
 void Session::start() {
@@ -58,14 +58,20 @@ void Session::do_write(size_t length) {
 }
 
 std::string Session::process_command(const std::string& input) {
-    auto command = Parser::parse(input);
-    if (!command) {
-        LOG_WARNING << "Incorrect command received";
-        return "ERROR: Incorrect command\n";
+    try {
+        auto command = Parser::parse(input);
+        if (!command) {
+            LOG_WARNING << "Incorrect command received";
+            return "ERROR: Incorrect command\n";
+        }
+        if (!command->validate()) {
+            LOG_WARNING << "Command validation failed";
+            return "ERROR: Validation error\n";
+        }
+        return command->execute(db_);
     }
-    if (!command->validate()) {
-        LOG_WARNING << "Command validation failed";
-        return "ERROR: Validation error\n";
+    catch (std::exception& e) {
+        LOG_ERROR << "Command execution failed: " << e.what();
+        return std::string("ERROR: ") + e.what() + '\n';
     }
-    return command->execute(db_);
 }

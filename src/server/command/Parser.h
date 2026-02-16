@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Command.h"
+#include "../logging/Logger.h"
 
 class Parser{
 public:

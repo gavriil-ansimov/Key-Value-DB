@@ -10,8 +10,10 @@
 
 CommandPtr Parser::parse(const std::string& input) {
     auto tokens = tokenize(input);
-    if (tokens.empty())
+    if (tokens.empty()) {
+        LOG_WARNING << "Recieved empty message";
         return nullptr;
+    }
     return create_command(tokens);
 }
 
@@ -30,21 +32,27 @@ CommandPtr Parser::create_command(const std::vector<std::string>& tokens) {
     const std::string& command = tokens[0];
 
     if (command == "GET" && tokens.size() == 2) {
+        LOG_TRACE << "Parsed command: " << command << ' ' << tokens[1];
         return std::make_unique<GetCommand>(tokens[1]);
     }
     else if (command == "PUT" && tokens.size() == 3) {
+        LOG_TRACE << "Parsed command: " << command << ' ' << tokens[1] << ' ' << tokens[2];
         return std::make_unique<PutCommand>(tokens[1], tokens[2]);
     }
     else if (command == "COUNT" && tokens.size() == 1) {
+        LOG_TRACE << "Parsed command: " << command;
         return std::make_unique<CountCommand>();
     }
     else if (command == "DEL" && tokens.size() == 2) {
+        LOG_TRACE << "Parsed command: " << command << ' ' << tokens[1];
         return std::make_unique<DelCommand>(tokens[1]);
     }
     else if (command == "DUMP" && tokens.size() == 2) {
+        LOG_TRACE << "Parsed command: " << command << ' ' << tokens[1];
         return std::make_unique<DumpCommand>(tokens[1]);
     }
     else if (command == "LOAD" && tokens.size() == 2) {
+        LOG_TRACE << "Parsed command: " << command << ' ' << tokens[1];
         return std::make_unique<LoadCommand>(tokens[1]);
     }
     // ...
