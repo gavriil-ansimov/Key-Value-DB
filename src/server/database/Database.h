@@ -6,10 +6,12 @@
 #include <vector>
 #include <mutex>
 
-#include "../logging/Logger.h"
+class ILogger;
 
 class Database{
 public:
+    Database(ILogger& logger);
+
     std::string get(const std::string&) const;
     std::string count() const;
     std::string dump(const std::string&) const;
@@ -20,4 +22,5 @@ public:
 private:
     std::unordered_map<std::string, std::string> db_;
     mutable std::mutex m_;
+    ILogger& logger_;
 };
